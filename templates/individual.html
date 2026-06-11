@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}individual blog-{{ blog.id }}{% endblock title %}
+
+{% block content %}
+
+{{ blog.title }}
+{{ blog.content }}
+{{ blog.created }}
+
+{% endblock content %}

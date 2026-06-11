@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <form action="{% url "register_user" %}" method='POST'>
+        {% csrf_token %}
+        <label>Name: <input type="text" name="username"></label>
+        <label>Password: <input type="password" name="pass1"></label>
+        <label>Repeat-Password: <input type="password" name="pass2"></label>
+        <button type="submit">Register</button>
+    </form>
+    <a href="{% url "login" %}">already a user- Login</a>
+</body>
+</html>

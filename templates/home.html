@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+
+{% for b in blog %}
+{{ b.title }}
+{{ b.content }}
+<a href="{% url "individual" b.id %}"><button>read-more</button></a>
+{% endfor %}
+
+{% endblock content %}
