@@ -1,13 +1,66 @@
 {% extends "base.html" %}
 
 {% block title %}Home{% endblock title %}
+{% block body_class %}home-page{% endblock body_class %}
 
 {% block content %}
+<section class="hero">
+    <div class="hero__copy">
+        <p class="eyebrow">Your private writing space</p>
+        <h1>Write, refine, and revisit your ideas in a clean modern dashboard.</h1>
+        <p class="hero__lead">
+            Keep your blog posts organized, skim them quickly, and jump back into editing whenever inspiration hits.
+        </p>
+        <div class="hero__actions">
+            <a class="button button--primary" href="{% url 'create' %}">Create new post</a>
+            <button class="button button--ghost" type="button" data-scroll-target="#blog-list">Browse posts</button>
+        </div>
+    </div>
 
-{% for b in blog %}
-{{ b.title }}
-{{ b.content }}
-<a href="{% url "individual" b.id %}"><button>read-more</button></a>
-{% endfor %}
+    <aside class="hero__panel">
+        <div class="stat-card">
+            <span class="stat-card__label">Posts</span>
+            <strong>{{ blog|length }}</strong>
+            <small>Managed by {{ user.username }}</small>
+        </div>
+        <div class="stat-card stat-card--accent">
+            <span class="stat-card__label">Focus mode</span>
+            <strong>On</strong>
+            <small>Fast read, fewer distractions</small>
+        </div>
+    </aside>
+</section>
 
+<section class="toolbar">
+    <div>
+        <h2 id="blog-list">Latest posts</h2>
+        <p>Search your posts in real time.</p>
+    </div>
+    <label class="search-field" for="blog-search">
+        <span>Search</span>
+        <input id="blog-search" type="search" placeholder="Type a title or phrase..." data-blog-search>
+    </label>
+</section>
+
+<section class="blog-grid" data-blog-grid>
+    {% for b in blog %}
+        <article class="blog-card" data-blog-card>
+            <div class="blog-card__meta">
+                <span>{{ b.created|date:"M d, Y" }}</span>
+                <span>Draft {{ forloop.counter }}</span>
+            </div>
+            <h3>{{ b.title }}</h3>
+            <p>{{ b.content|truncatewords:26 }}</p>
+            <div class="blog-card__actions">
+                <a class="button button--secondary" href="{% url 'individual' b.id %}">Read more</a>
+            </div>
+        </article>
+    {% empty %}
+        <article class="empty-state">
+            <h3>No posts yet</h3>
+            <p>Start with your first post and it will appear here instantly.</p>
+            <a class="button button--primary" href="{% url 'create' %}">Write your first post</a>
+        </article>
+    {% endfor %}
+</section>
 {% endblock content %}

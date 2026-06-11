@@ -1,18 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-</head>
-<body>
-    <form action="{% url "register_user" %}" method='POST'>
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock title %}
+{% block body_class %}auth-page{% endblock body_class %}
+
+{% block content %}
+<section class="auth-layout">
+    <div class="auth-copy">
+        <p class="eyebrow">Start writing</p>
+        <h1>Create your account and build your own little publishing space.</h1>
+        <p>
+            Registration is quick, and once you're in, your posts stay tied to your account.
+        </p>
+    </div>
+
+    <form class="auth-card" action="{% url 'register_user' %}" method="POST" novalidate>
         {% csrf_token %}
-        <label>Name: <input type="text" name="username"></label>
-        <label>Password: <input type="password" name="pass1"></label>
-        <label>Repeat-Password: <input type="password" name="pass2"></label>
-        <button type="submit">Register</button>
+        <h2>Register</h2>
+
+        {% if error %}
+            <div class="form-alert">{{ error }}</div>
+        {% endif %}
+        {% if password_err %}
+            <div class="form-alert">{{ password_err }}</div>
+        {% endif %}
+
+        <label>
+            <span>Username</span>
+            <input type="text" name="username" autocomplete="username" required>
+        </label>
+
+        <label>
+            <span>Password</span>
+            <input type="password" name="pass1" autocomplete="new-password" required>
+        </label>
+
+        <label>
+            <span>Repeat password</span>
+            <input type="password" name="pass2" autocomplete="new-password" required>
+        </label>
+
+        <button class="button button--primary button--full" type="submit">Register</button>
+        <p class="auth-card__footnote">Already have an account? <a href="{% url 'login' %}">Login</a></p>
     </form>
-    <a href="{% url "login" %}">already a user- Login</a>
-</body>
-</html>
+</section>
+{% endblock content %}

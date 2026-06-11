@@ -1,0 +1,28 @@
+{% extends "base_main.html" %}
+
+{% block title %}{{ blog_ind.title }}{% endblock title %}
+{% block body_class %}public-detail-page{% endblock body_class %}
+
+{% block content %}
+<article class="detail-card">
+    <header class="detail-card__header">
+        <div>
+            <p class="eyebrow">Public post</p>
+            <h1>{{ blog_ind.title }}</h1>
+        </div>
+        <div class="detail-card__meta">
+            <span>@{{ blog_ind.author.username }}</span>
+            <span>{{ blog_ind.created|date:"M d, Y · h:i A" }}</span>
+        </div>
+    </header>
+
+    <div class="detail-card__body">
+        <p>{{ blog_ind.content|linebreaks }}</p>
+    </div>
+
+    <footer class="detail-card__footer">
+        <a class="button button--secondary" href="{% url 'home_main' %}">Back to feed</a>
+        <a class="button button--primary" href="{% url 'login' %}">Login to publish</a>
+    </footer>
+</article>
+{% endblock content %}

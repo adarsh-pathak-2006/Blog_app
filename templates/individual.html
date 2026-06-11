@@ -1,11 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %}individual blog-{{ blog.id }}{% endblock title %}
+{% block title %}{{ blog.title }}{% endblock title %}
+{% block body_class %}detail-page{% endblock body_class %}
 
 {% block content %}
+<article class="detail-card">
+    <header class="detail-card__header">
+        <div>
+            <p class="eyebrow">Blog post</p>
+            <h1>{{ blog.title }}</h1>
+        </div>
+        <div class="detail-card__meta">
+            <span>By {{ blog.author.username }}</span>
+            <span>{{ blog.created|date:"M d, Y · h:i A" }}</span>
+        </div>
+    </header>
 
-{{ blog.title }}
-{{ blog.content }}
-{{ blog.created }}
+    <div class="detail-card__body">
+        <p>{{ blog.content|linebreaks }}</p>
+    </div>
 
+    <footer class="detail-card__footer">
+        <a class="button button--secondary" href="{% url 'home' %}">Back to posts</a>
+        <a class="button button--primary" href="{% url 'create' %}">Write another</a>
+    </footer>
+</article>
 {% endblock content %}

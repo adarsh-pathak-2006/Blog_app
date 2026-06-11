@@ -1,17 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-</head>
-<body>
-    <form action="{% url "log" %}" method='POST'>
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock title %}
+{% block body_class %}auth-page{% endblock body_class %}
+
+{% block content %}
+<section class="auth-layout">
+    <div class="auth-copy">
+        <p class="eyebrow">Welcome back</p>
+        <h1>Sign in to continue editing your blog.</h1>
+        <p>
+            Pick up where you left off, keep writing, and manage your posts from one calm workspace.
+        </p>
+    </div>
+
+    <form class="auth-card" action="{% url 'log' %}" method="POST" novalidate>
         {% csrf_token %}
-        <label>Name: <input type="text" name="username"></label>
-        <label>Password: <input type="password" name="pass"></label>
-        <button type="submit">Login</button>
+        <h2>Login</h2>
+
+        {% if error %}
+            <div class="form-alert">{{ error }}</div>
+        {% endif %}
+
+        <label>
+            <span>Username</span>
+            <input type="text" name="username" autocomplete="username" required>
+        </label>
+
+        <label>
+            <span>Password</span>
+            <input type="password" name="pass" autocomplete="current-password" required>
+        </label>
+
+        <button class="button button--primary button--full" type="submit">Login</button>
+        <p class="auth-card__footnote">New here? <a href="{% url 'register' %}">Create an account</a></p>
     </form>
-    <a href="{% url "register" %}">new here- register</a>
-</body>
-</html>
+</section>
+{% endblock content %}

@@ -1,10 +1,11 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate, login
+from django.shortcuts import render,redirect,get_object_or_404
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from .models import blogs
 
 
-def login(request):
+def login_u(request):
     return render(request, 'login.html')
 
 def login_user(request):
@@ -45,24 +46,41 @@ def register_user(request):
             return render(request, 'register.html', { 'password_err':'enter the same passwords' })
     return render(request, 'register.html')
 
+@login_required
 def home(request):
-    blog=blogs.objects.all()
+    blog=blogs.objects.filter(author=request.user)
     return render(request, 'home.html',{ 'blog':blog })
 
+@login_required
 def add(request):
-    return render(request, 'add_task.html')
+    return render(request, 'add_blog.html')
 
+@login_required
 def create_blog(request):
     if request.method=="POST":
         blogs.objects.create(
+            author=request.user,
             title=request.POST.get('title'),
             content=request.POST.get('content')
         )
         return redirect('home')
     return render(request, 'add_blog.html')
-            
+
+@login_required           
 def individual(request, id):
-    blog=blogs.objects.get(id=id)
+    blog = get_object_or_404(blogs, id=id, author=request.user)
     return render(request, 'individual.html', { 'blog':blog })
 
 
+def logout_user(request):
+    logout(request)
+    return redirect('login')
+
+
+def home_main(request):
+    blog=blogs.objects.all()
+    return render(request, 'home_main.html', {'blog':blog})
+
+def home_main_individual(request, id):
+    blog_indivi=get_object_or_404(blogs,id=id)
+    return render(request, 'blog_main_individual.html', { 'blog_ind':blog_indivi })

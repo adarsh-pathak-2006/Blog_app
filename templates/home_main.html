@@ -1,0 +1,66 @@
+{% extends "base_main.html" %}
+
+{% block title %}Explore{% endblock title %}
+{% block body_class %}public-page{% endblock body_class %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero__copy">
+        <p class="eyebrow">Public feed</p>
+        <h1>Browse fresh posts with a crisp, calm reading experience.</h1>
+        <p class="hero__lead">
+            Discover posts from the community, search in real time, and open any story without visual clutter.
+        </p>
+        <div class="hero__actions">
+            <a class="button button--primary" href="{% url 'login' %}">Sign in</a>
+            <button class="button button--ghost" type="button" data-scroll-target="#feed">Browse feed</button>
+        </div>
+    </div>
+
+    <aside class="hero__panel">
+        <div class="stat-card">
+            <span class="stat-card__label">Published posts</span>
+            <strong>{{ blog|length }}</strong>
+            <small>Latest entries available now</small>
+        </div>
+        <div class="stat-card stat-card--accent">
+            <span class="stat-card__label">Reading mode</span>
+            <strong>Fast</strong>
+            <small>Clutter-free cards and quick previews</small>
+        </div>
+    </aside>
+</section>
+
+<section class="toolbar">
+    <div>
+        <h2 id="feed">Trending stories</h2>
+        <p>Search by title, author, or body text.</p>
+    </div>
+    <label class="search-field" for="blog-search">
+        <span>Search posts</span>
+        <input id="blog-search" type="search" placeholder="Type to filter posts..." data-blog-search>
+    </label>
+</section>
+
+<section class="blog-grid" data-blog-grid>
+    {% for b in blog %}
+        <article class="blog-card" data-blog-card>
+            <div class="blog-card__meta">
+                <span>{{ b.created|date:"M d, Y" }}</span>
+                <span>@{{ b.author.username }}</span>
+            </div>
+            <h3>{{ b.title }}</h3>
+            <p>{{ b.content|truncatewords:30 }}</p>
+            <div class="blog-card__actions">
+                <a class="button button--secondary" href="{% url 'blog_individual' b.id %}">Read story</a>
+            </div>
+        </article>
+    {% empty %}
+        <article class="empty-state">
+            <h3>No public posts yet</h3>
+            <p>When posts are added, they will appear here with the same clean reading layout.</p>
+            <a class="button button--primary" href="{% url 'login' %}">Sign in</a>
+        </article>
+    {% endfor %}
+</section>
+{% endblock content %}
